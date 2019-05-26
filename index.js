@@ -1,9 +1,19 @@
+const Joi = require('joi');
 const express = require('express');
 const courses = require('./data');
 
 const app = express();
-
 app.use(express.json());
+
+const validateCourse = (course) => {
+    const schema = {
+        name: Joi.string()
+            .min(3)
+            .required(),
+    };
+
+    return Joi.validate(course, schema);
+};
 
 app.get('/api/courses', (req, res) => {
     const { search } = req.query;
@@ -16,25 +26,57 @@ app.get('/api/courses', (req, res) => {
 
 app.get('/api/courses/:id', (req, res) => {
     const course = courses.find(c => c.id === Number(req.params.id));
-    if (!course) res.status(404).send('Course with given ID is not found.');
+    if (!course) {
+        res.status(404).send('Course with given ID is not found.');
+        return;
+    }
     res.send(course);
 });
 
 app.post('/api/courses', (req, res) => {
-    const { name } = req.body;
+    const { error, value } = validateCourse(req.body);
 
-    if (!name || name.length < 3) {
+    if (error) {
         // 400 Bad Request
-        res.status(400).send('Name is required and should be minimum 3 characters long.');
-        return;
+        res.status(400).send(error.details[0].message);
     }
 
     const course = {
         id: courses.length + 1,
-        name,
+        ...value,
     };
 
     courses.push(course);
+    res.send(course);
+});
+
+app.put('/api/courses/:id', (req, res) => {
+    const course = courses.find(c => c.id === Number(req.params.id));
+    if (!course) {
+        res.status(404).send('Course with given ID is not found.');
+        return;
+    }
+
+    const { error, value } = validateCourse(req.body);
+    if (error) {
+        res.status(400).send(error.details[0].message);
+    }
+
+    Object.assign(course, value);
+
+    res.send(course);
+});
+
+app.delete('/api/courses/:id', (req, res) => {
+    const course = courses.find(c => c.id === Number(req.params.id));
+    if (!course) {
+        res.status(404).send('Course with given ID is not found.');
+        return;
+    }
+
+    const index = courses.indexOf(course);
+    courses.splice(index, 1);
+
     res.send(course);
 });
 
