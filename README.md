@@ -4,27 +4,27 @@ Book library REST API server created using express.
 
 ## Endpoints
 
-#### `GET /api/books`
+##### `GET /api/books`
 
 List all books
 
-#### `GET /api/books?search={name/author}`
+##### `GET /api/books?search={name/author}`
 
 Search book(s) by name/author.
 
-#### `GET /api/books/{id}`
+##### `GET /api/books/{id}`
 
 Get a book by id.
 
-#### `POST /api/books`
+##### `POST /api/books`
 
 Create a new book.
 
-#### `PUT /api/books/{id}`
+##### `PUT /api/books/{id}`
 
 Update a book by id.
 
-#### `DELETE /api/books/{id}`
+##### `DELETE /api/books/{id}`
 
 Delete a book by id.
 
