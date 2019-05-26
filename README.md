@@ -1,3 +1,3 @@
-# express-demo
+# Book Library APIs
 
-Basic REST api intro using express.
+Book library REST API server created using express.

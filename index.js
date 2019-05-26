@@ -1,23 +1,19 @@
 const express = require('express');
-const { validateCourse } = require('./validators');
 const createLocalDB = require('./createLocalDB');
+const { validateBook } = require('./validators');
 
-const courses = createLocalDB('./data.json');
-
+const books = createLocalDB('./data.json');
 const app = express();
+
 app.use(express.json());
 
-app.get('/api/courses', (req, res) => {
+app.get('/api/books', (req, res) => {
     const { search } = req.query;
-    let foundCourses = courses.get();
-    if (search) {
-        foundCourses = foundCourses.filter(c => c.name.includes(search));
-    }
-    res.send(foundCourses);
+    res.send(books.search(search, ['name']));
 });
 
-app.get('/api/courses/:id', (req, res) => {
-    const course = courses.get(Number(req.params.id));
+app.get('/api/books/:id', (req, res) => {
+    const course = books.get(Number(req.params.id));
     if (!course) {
         res.status(404).send('Course with given ID is not found.');
         return;
@@ -25,26 +21,26 @@ app.get('/api/courses/:id', (req, res) => {
     res.send(course);
 });
 
-app.post('/api/courses', (req, res) => {
-    const { error, value } = validateCourse(req.body);
+app.post('/api/books', (req, res) => {
+    const { error, value } = validateBook(req.body);
 
     if (error) {
         // 400 Bad Request
         res.status(400).send(error.details[0].message);
     }
 
-    const newCourse = courses.insert(value);
+    const newCourse = books.insert(value);
     res.send(newCourse);
 });
 
-app.put('/api/courses/:id', (req, res) => {
-    const course = courses.get(Number(req.params.id));
+app.put('/api/books/:id', (req, res) => {
+    const course = books.get(Number(req.params.id));
     if (!course) {
         res.status(404).send('Course with given ID is not found.');
         return;
     }
 
-    const { error, value } = validateCourse(req.body);
+    const { error, value } = validateBook(req.body);
     if (error) {
         res.status(400).send(error.details[0].message);
     }
@@ -54,18 +50,18 @@ app.put('/api/courses/:id', (req, res) => {
         ...value,
     };
 
-    courses.update(updatedCourse);
+    books.update(updatedCourse);
     res.send(updatedCourse);
 });
 
-app.delete('/api/courses/:id', (req, res) => {
-    const course = courses.get(Number(req.params.id));
+app.delete('/api/books/:id', (req, res) => {
+    const course = books.get(Number(req.params.id));
     if (!course) {
         res.status(404).send('Course with given ID is not found.');
         return;
     }
 
-    courses.delete(course);
+    books.delete(course);
     res.send(course);
 });
 

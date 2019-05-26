@@ -13,8 +13,7 @@ const createLocalDB = (file) => {
     };
 
     const saveRecords = () => {
-        console.log('---------------------------------------------------');
-        fs.writeFileSync(file, JSON.stringify(records));
+        fs.writeFileSync(file, JSON.stringify(records, null, 4));
     };
 
     getRecords();
@@ -45,6 +44,13 @@ const createLocalDB = (file) => {
             delete records[record.id];
             saveRecords();
             return record;
+        },
+        search: (value, filters = []) => {
+            if (!value) return Object.values(records);
+            return Object.values(records).filter((r) => {
+                const result = filters.map(f => r[f]).join();
+                return result.includes(value);
+            });
         },
     };
 };
