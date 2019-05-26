@@ -10,23 +10,23 @@ List all books
 
 #### `GET /api/books?search={name/author}`
 
-Search book(s) with name/author.
+Search book(s) by name/author.
 
 #### `GET /api/books/{id}`
 
-Get a book with id.
+Get a book by id.
 
 #### `POST /api/books`
 
-Create a new book with id.
+Create a new book.
 
 #### `PUT /api/books/{id}`
 
-Update a book with id.
+Update a book by id.
 
 #### `DELETE /api/books/{id}`
 
-Delete a book with id.
+Delete a book by id.
 
 ## Getting started
 
