@@ -1,15 +1,17 @@
 const express = require('express');
+const cors = require('cors');
 const createLocalDB = require('./createLocalDB');
 const { validateBook } = require('./validators');
 
 const books = createLocalDB('./data.json');
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 
 app.get('/api/books', (req, res) => {
     const { search } = req.query;
-    res.send(books.search(search, ['name']));
+    res.send(books.search(search, ['name', 'author']));
 });
 
 app.get('/api/books/:id', (req, res) => {

@@ -9,7 +9,8 @@ const validateBook = (book) => {
             .max(50)
             .required(),
         description: Joi.string()
-            .max(50)
+            .max(500)
+            .empty('')
             .default(''),
         count: Joi.number().default(0),
     };

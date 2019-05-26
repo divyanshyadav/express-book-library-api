@@ -48,8 +48,11 @@ const createLocalDB = (file) => {
         search: (value, filters = []) => {
             if (!value) return Object.values(records);
             return Object.values(records).filter((r) => {
-                const result = filters.map(f => r[f]).join();
-                return result.includes(value);
+                const result = filters
+                    .map(f => r[f])
+                    .join()
+                    .toLocaleLowerCase();
+                return result.includes(value.toLocaleLowerCase());
             });
         },
     };
