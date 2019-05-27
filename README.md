@@ -39,3 +39,11 @@ Then you can run:
 ### `npm start`
 
 Which runs the server on port 5000.
+
+### `npm run lint`
+
+Analyzes source code to flag programming errors, bugs, stylistic errors, and suspicious constructs.
+
+### `npm run lint:fix`
+
+Automatically fix problems.
